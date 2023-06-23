@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 // Connect to MongoDB Atlas
 mongoose
   .connect(
-    'mongodb+srv://koushiksis20:fmnEl1raBb8GveKX@cluster0.zyfvp75.mongodb.net/template', // Replace with your actual MongoDB Atlas connection string
+    'mongodb+srv://koushiksis20:<password>@cluster0.zyfvp75.mongodb.net/template', // Replace with your actual MongoDB Atlas connection string
     {
       useNewUrlParser: true,
       useUnifiedTopology: true
