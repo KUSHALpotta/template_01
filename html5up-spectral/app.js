@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'static')));
 
 // Connect to MongoDB Atlas
-mongoose.connect('mongodb+srv://kushalkumar:9MThSRtR3oSX2Gk6@cluster0.rwgu7vx.mongodb.net/template?retryWrites=true&w=majority', {
+mongoose.connect('mongodb+srv://kushalkumar:<password>@cluster0.rwgu7vx.mongodb.net/template?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
