@@ -5,8 +5,7 @@ const mongoose = require("mongoose");
 const User = require("./model/user");
 const { MongoClient } = require("mongodb");
 
-const mongoURI =
-  "mongodb+srv://koushiksis20:fmnEl1raBb8GveKX@cluster0.zyfvp75.mongodb.net/template";
+const mongoURI = "<connection-string>";
 
 const app = express();
 const port = 3000;
