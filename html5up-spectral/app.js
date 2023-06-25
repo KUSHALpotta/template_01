@@ -52,32 +52,29 @@ app.post('/signup', (req, res) => {
         });
 });
 
-const Schema = mongoose.Schema;
-
-const formDataSchema = new Schema({
-  email: { type: String, required: true },
-  password: { type: String, required: true },
-});
-
-const FormData = mongoose.model('users', formDataSchema);
-
 app.post('/submit', (req, res) => {
-  const { email, password } = req.body;
+    const { email, password } = req.body;
 
-  const formData = new FormData({
-    email,
-    password,
-  });
+    // Find the user in the database based on the provided email
+    User.findOne({ email })
+        .then(user => {
+            if (!user) {
+                // If the user is not found, return an error response
+                return res.status(404).json({ error: 'User not found' });
+            }
 
-  formData
-    .save()
-    .then(() => {
-      res.send('Form data saved successfully');
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send('An error occurred');
-    });
+            // Check if the provided password matches the user's password
+            if (user.password !== password) {
+                // If the passwords don't match, return an error response
+                return res.status(401).json({ error: 'Invalid password' });
+            }
+
+            // If the login is successful, return a success response
+            res.json({ message: 'Login successful', user });
+        })
+        .catch(error => {
+            res.status(500).json({ error: 'An error occurred while logging in' });
+        });
 });
 
 // Serve the index.html file
