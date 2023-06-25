@@ -52,7 +52,39 @@ app.post('/signup', (req, res) => {
         });
 });
 
+const Schema = mongoose.Schema;
+
+const formDataSchema = new Schema({
+  email: { type: String, required: true },
+  password: { type: String, required: true },
+});
+
+const FormData = mongoose.model('users', formDataSchema);
+
+app.post('/submit', (req, res) => {
+  const { email, password } = req.body;
+
+  const formData = new FormData({
+    email,
+    password,
+  });
+
+  formData
+    .save()
+    .then(() => {
+      res.send('Form data saved successfully');
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send('An error occurred');
+    });
+});
+
 // Serve the index.html file
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, './static/index.html'));
+});
+
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, './static/login.html'));
 });
