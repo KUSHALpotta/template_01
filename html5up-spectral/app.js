@@ -5,11 +5,14 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt"); // Add bcrypt library
 const User = require("./model/user");
 
+
 const mongoURI =
   "mongodb+srv://kushalkumar:9MThSRtR3oSX2Gk6@cluster0.rwgu7vx.mongodb.net/template?retryWrites=true&w=majority";
 
 const app = express();
 const port = 3000;
+
+app.set('view engine', 'ejs');
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -86,8 +89,8 @@ app.post("/submit", async (req, res) => {
 
 app.get("/admin1", async (req, res) => {
     try {
-      const users = await User.find();
-      res.redirect("/admin.html");
+        const users = await User.find();
+        res.render('admin', { users });        
     } catch (error) {
       console.error("Error fetching user data:", error);
       res
