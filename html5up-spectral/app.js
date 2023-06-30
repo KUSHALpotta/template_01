@@ -39,21 +39,50 @@ mongoose
 
 // Handle form submission
 app.post("/signup", async (req, res) => {
-  // ... existing code for signup
+    const {
+        fullName,
+        username,
+        email,
+        phoneNumber,
+        password,
+        confirmPassword,
+        gender,
+    } = req.body;
 
-  try {
-    // ... existing code for signup
+    try {
+        // Check if the user already exists in the database
+        const existingUser = await User.findOne({ email });
 
-    const savedUser = await newUser.save();
+        if (existingUser) {
+            return res
+                .status(409)
+                .json({ message: "User with this email already exists" });
+        }
 
-    res.json({ message: "User registered successfully", user: savedUser });
-  } catch (error) {
-    console.error("Error registering user:", error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while registering the user" });
-  }
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const newUser = new User({
+            fullName,
+            username,
+            email,
+            phoneNumber,
+            password: hashedPassword, // Store the hashed password in the database
+            confirmPassword: hashedPassword,
+            gender,
+        });
+
+        const savedUser = await newUser.save();
+
+        res.json({ message: "User registered successfully", user: savedUser });
+    } catch (error) {
+        console.error("Error registering user:", error);
+        res
+            .status(500)
+            .json({ error: "An error occurred while registering the user" });
+    }
 });
+
 
 app.post("/submit", async (req, res) => {
   const { email, password } = req.body;
